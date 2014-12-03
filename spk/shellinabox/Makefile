@@ -1,0 +1,49 @@
+SPK_NAME = shellinabox
+SPK_VERS = 3.0
+SPK_REV = 0
+SPK_ICON = src/shellinabox.png
+DSM_UI_DIR = app
+
+DEPENDS = cross/shellinabox
+
+MAINTAINER = Grimthorr
+DESCRIPTION = Shell In A Box implements a web server that can export arbitrary command line tools to a web based terminal emulator. This emulator is accessible to any JavaScript and CSS enabled web browser and does not require any additional browser plugins.
+ADMIN_PROTOCOL = https
+ADMIN_PORT = 4200
+RELOAD_UI = yes
+DISPLAY_NAME = Shellinabox
+CHANGELOG = "1. Fix dependencies for DSM 5.1 and disable SSL 3.0 (initial release)."
+
+HOMEPAGE   = http://hughesbox.co.uk
+LICENSE    = AGPLv3
+
+INSTALLER_SCRIPT = src/installer.sh
+SSS_SCRIPT       = src/dsm-control.sh
+FWPORTS          = src/${SPK_NAME}.sc
+
+INSTALL_PREFIX = /usr/local/$(SPK_NAME)
+COPY_TARGET = nop
+
+POST_STRIP_TARGET = shellinabox_extra_install
+
+include ../../mk/spksrc.spk.mk
+
+.PHONY: shellinabox_extra_install
+shellinabox_extra_install: $(STAGING_DIR)/share/Shellinabox
+	install -m 755 -d $(STAGING_DIR)/app
+	install -m 644 src/app/config $(STAGING_DIR)/app/config
+	install -m 644 src/app/shellinabox.cgi $(STAGING_DIR)/app/shellinabox.cgi
+	for size in 16 24 32 48 72; do \
+		convert $(SPK_ICON) -thumbnail $${size}x$${size} \
+		        $(STAGING_DIR)/app/$(SPK_NAME)-$${size}.png ; \
+	done
+	install -m 755 -d $(STAGING_DIR)/share/doc
+	install -m 644 src/share/doc/* $(STAGING_DIR)/share/doc/
+	install -m 755 -d $(STAGING_DIR)/bin
+	install -m 755 $(STAGING_INSTALL_PREFIX)/bin/shellinaboxd $(STAGING_DIR)/bin/shellinaboxd
+
+$(STAGING_DIR)/share/Shellinabox:
+	#install -m 755 -d $(STAGING_DIR)/share
+	#cd $(STAGING_DIR)/share && git clone https://code.google.com/p/shellinabox/ shellinabox
+	#patch -p1 -d $(STAGING_DIR)/share < patches/ssl-options.patch
+	#rm -fr $(STAGING_DIR)/share/shellinabox/.git $(STAGING_DIR)/share/shellinabox/.gitignore

@@ -1,0 +1,12 @@
+{
+    ".url": {
+        "uk.co.hughesbox.shellinabox": {
+            "title": "Shellinabox",
+            "desc": "Shellinabox",
+            "icon": "shellinabox-{0}.png",
+            "type": "legacy",
+            "url": "3rdparty/shellinabox/shellinabox.cgi",
+            "allUsers": false
+        }
+    }
+}

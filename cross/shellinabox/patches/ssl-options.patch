@@ -1,0 +1,48 @@
+From fa6ee067eaa3cfa95fed8b83a22a993972b12f8e Mon Sep 17 00:00:00 2001
+From: Anders Kaseorg <andersk@mit.edu>
+Date: Thu, 3 Jan 2013 04:01:53 -0500
+Subject: [PATCH] Set SSL options for increased security
+
+Disable SSLv2, SSLv3, and compression; generate new DH or ECDH keys
+during each handshake; always start a new session on server
+renegotiation; set a strong cipher list.
+
+Signed-off-by: Anders Kaseorg <andersk@mit.edu>
+---
+ libhttp/ssl.c | 27 ++++++++++++++++++++++++---
+ 1 file changed, 24 insertions(+), 3 deletions(-)
+
+diff --git libhttp/ssl.c.old libhttp/ssl.c
+index d2788dd..c932deb 100644
+--- libhttp/ssl.c.old
++++ libhttp/ssl.c
+@@ -619,7 +640,7 @@ static int sslSNICallback(SSL *sslHndl, int *al ATTR_UNUSED,
+                                                    serverName+1,
+                                                    NULL);
+   if (context == NULL) {
+-    check(context         = SSL_CTX_new(SSLv23_server_method()));
++    check(context         = SSL_CTX_new(TLSv1_server_method()));
+     check(ssl->sniCertificatePattern);
+     char *certificate     = stringPrintfUnchecked(NULL,
+                                                   ssl->sniCertificatePattern,
+@@ -697,7 +718,7 @@ void sslSetCertificate(struct SSLSupport *ssl, const char *filename,
+   }
+ 
+   // Try to set the default certificate. If necessary, (re-)generate it.
+-  check(ssl->sslContext              = SSL_CTX_new(SSLv23_server_method()));
++  check(ssl->sslContext              = SSL_CTX_new(TLSv1_server_method()));
+   if (autoGenerateMissing) {
+     if (sslSetCertificateFromFile(ssl->sslContext, defaultCertificate) < 0) {
+       char hostname[256], buf[4096];
+@@ -781,7 +802,7 @@ static char *sslFdToFilename(int fd) {
+ 
+ void sslSetCertificateFd(struct SSLSupport *ssl, int fd) {
+ #ifdef HAVE_OPENSSL
+-  check(ssl->sslContext = SSL_CTX_new(SSLv23_server_method()));
++  check(ssl->sslContext = SSL_CTX_new(TLSv1_server_method()));
+   char *filename = sslFdToFilename(fd);
+   if (!sslSetCertificateFromFd(ssl->sslContext, fd)) {
+     fatal("Cannot read valid certificate from %s. Check file format.",
+-- 
+2.1.2
+
