@@ -1,6 +1,6 @@
 SPK_NAME = shellinabox
 SPK_VERS = 3.0
-SPK_REV = 1
+SPK_REV = 2
 SPK_ICON = src/shellinabox.png
 DSM_UI_DIR = app
 
@@ -32,7 +32,7 @@ include ../../mk/spksrc.spk.mk
 shellinabox_extra_install: $(STAGING_DIR)/share/Shellinabox
 	install -m 755 -d $(STAGING_DIR)/app
 	install -m 644 src/app/config $(STAGING_DIR)/app/config
-	install -m 644 src/app/shellinabox.cgi $(STAGING_DIR)/app/shellinabox.cgi
+	install -m 755 src/app/shellinabox.cgi $(STAGING_DIR)/app/shellinabox.cgi
 	for size in 16 24 32 48 72; do \
 		convert $(SPK_ICON) -thumbnail $${size}x$${size} \
 		        $(STAGING_DIR)/app/$(SPK_NAME)-$${size}.png ; \
