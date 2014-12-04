@@ -1,8 +1,8 @@
 PKG_NAME = shellinabox
-PKG_VERS = 2.14
+PKG_VERS = 4f472ac831c20080ff97c70bf27b9b425f4dec6a
 PKG_EXT = tar.gz
-PKG_DIST_NAME = $(PKG_NAME)-$(PKG_VERS).$(PKG_EXT)
-PKG_DIST_SITE = https://shellinabox.googlecode.com/files
+PKG_DIST_NAME = $(PKG_VERS).$(PKG_EXT)
+PKG_DIST_SITE = https://github.com/JGRennison/shellinabox/archive
 PKG_DIR = $(PKG_NAME)-$(PKG_VERS)
 
 DEPENDS =
