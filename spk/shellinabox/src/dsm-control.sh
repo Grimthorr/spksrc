@@ -52,6 +52,7 @@ case $1 in
 		else
 			echo ${DNAME} is not running.
 		fi
+		exit 0
 		;;
 	restart)
 		stop
