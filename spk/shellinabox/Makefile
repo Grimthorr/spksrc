@@ -1,6 +1,6 @@
 SPK_NAME = shellinabox
 SPK_VERS = 3.0
-SPK_REV = 2
+SPK_REV = 3
 SPK_ICON = src/shellinabox.png
 DSM_UI_DIR = app
 
@@ -12,7 +12,7 @@ ADMIN_PROTOCOL = https
 ADMIN_PORT = 4200
 RELOAD_UI = yes
 DISPLAY_NAME = Shellinabox
-CHANGELOG = "1. Fix dependencies for DSM 5.1 and disable SSL 3.0 (initial release)."
+CHANGELOG = "Initial release."
 
 HOMEPAGE   = http://hughesbox.co.uk
 LICENSE    = AGPLv3
