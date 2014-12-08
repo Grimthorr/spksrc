@@ -12,11 +12,5 @@ COMMENT  = Shell In A Box implements a web server that can export arbitrary comm
 LICENSE  = GNU GPL v2
 
 GNU_CONFIGURE = 1
-INSTALL_TARGET = myInstall
 
 include ../../mk/spksrc.cross-cc.mk
-
-.PHONY: myInstall
-myInstall:
-	@$(RUN) mkdir -p $(STAGING_INSTALL_PREFIX)/bin/
-	@$(RUN) cp shellinaboxd $(STAGING_INSTALL_PREFIX)/bin/shellinaboxd

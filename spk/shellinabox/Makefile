@@ -22,7 +22,6 @@ SSS_SCRIPT       = src/dsm-control.sh
 FWPORTS          = src/${SPK_NAME}.sc
 
 INSTALL_PREFIX = /usr/local/$(SPK_NAME)
-COPY_TARGET = nop
 
 POST_STRIP_TARGET = shellinabox_extra_install
 
