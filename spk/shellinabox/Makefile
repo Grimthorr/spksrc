@@ -29,7 +29,7 @@ POST_STRIP_TARGET = shellinabox_extra_install
 include ../../mk/spksrc.spk.mk
 
 .PHONY: shellinabox_extra_install
-shellinabox_extra_install: $(STAGING_DIR)/share/Shellinabox
+shellinabox_extra_install:
 	install -m 755 -d $(STAGING_DIR)/app
 	install -m 644 src/app/config $(STAGING_DIR)/app/config
 	install -m 755 src/app/shellinabox.cgi $(STAGING_DIR)/app/shellinabox.cgi
@@ -41,9 +41,3 @@ shellinabox_extra_install: $(STAGING_DIR)/share/Shellinabox
 	install -m 644 src/share/doc/* $(STAGING_DIR)/share/doc/
 	install -m 755 -d $(STAGING_DIR)/bin
 	install -m 755 $(STAGING_INSTALL_PREFIX)/bin/shellinaboxd $(STAGING_DIR)/bin/shellinaboxd
-
-$(STAGING_DIR)/share/Shellinabox:
-	#install -m 755 -d $(STAGING_DIR)/share
-	#cd $(STAGING_DIR)/share && git clone https://code.google.com/p/shellinabox/ shellinabox
-	#patch -p1 -d $(STAGING_DIR)/share < patches/ssl-options.patch
-	#rm -fr $(STAGING_DIR)/share/shellinabox/.git $(STAGING_DIR)/share/shellinabox/.gitignore

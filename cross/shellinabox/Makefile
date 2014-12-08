@@ -20,12 +20,3 @@ include ../../mk/spksrc.cross-cc.mk
 myInstall:
 	@$(RUN) mkdir -p $(STAGING_INSTALL_PREFIX)/bin/
 	@$(RUN) cp shellinaboxd $(STAGING_INSTALL_PREFIX)/bin/shellinaboxd
-
-	#@$(RUN) mkdir -p $(WORK_DIR)/staging/shellinabox/bin
-	#@$(RUN) cp $(SRC_DIR)shellinaboxd $(WORK_DIR)/staging/shellinabox/bin/
-
-	#@$(RUN) mkdir -p $(WORK_DIR)/shellinabox/$(INSTALL_PREFIX)/bin
-	#@$(RUN) cp $(SRC_DIR)shellinaboxd $(WORK_DIR)/shellinabox/$(INSTALL_PREFIX)/bin/
-
-	#$(RUN) $(MAKE) install DESTDIR=$(INSTALL_DIR)
-	#install -m 644 src/vimrc $(STAGING_INSTALL_PREFIX)/share/vim/vimrc
