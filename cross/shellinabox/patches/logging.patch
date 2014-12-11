@@ -1,0 +1,25 @@
+diff --git logging/logging.c.old logging/logging.c
+index 0b81e7b..1eb4f90 100644
+--- logging/logging.c.old
++++ logging/logging.c
+@@ -49,6 +49,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <time.h>
+ 
+ #include "logging/logging.h"
+ 
+@@ -56,6 +57,12 @@ static int verbosity = MSG_DEFAULT;
+ 
+ static void debugMsg(int level, const char *fmt, va_list ap) {
+   if (level <= verbosity) {
++    time_t rawtime;
++    char timeBuf[80];
++    time( &rawtime );
++    strftime(timeBuf, sizeof(timeBuf), "%d/%m/%Y %H:%M:%S - ", localtime(&rawtime));
++
++    fputs(timeBuf, stderr);
+     vfprintf(stderr, fmt, ap);
+     fputs("\n", stderr);
+   }
