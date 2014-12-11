@@ -6,6 +6,7 @@ DNAME="Shellinabox"
 
 # Others
 INSTALL_DIR="/usr/local/${PACKAGE}"
+LOG_FILE="${INSTALL_DIR}/bin/shellinaboxd.log"
 
 start ()
 {
@@ -17,7 +18,7 @@ start ()
 	chmod 640 ${INSTALL_DIR}/bin/certificate.pem
 
 	# Start shellinabox
-	${INSTALL_DIR}/bin/shellinaboxd -s /:LOGIN --css=${INSTALL_DIR}/share/doc/white-on-black.css --cert=${INSTALL_DIR}/bin/ &
+	${INSTALL_DIR}/bin/shellinaboxd -s /:LOGIN --css=${INSTALL_DIR}/share/doc/white-on-black.css --cert=${INSTALL_DIR}/bin/ -v 2>&1 | tee ${LOG_FILE} &
 }
 
 stop ()
@@ -68,6 +69,7 @@ case $1 in
 		fi
 		;;
 	log)
+		echo "${LOG_FILE}"
 		exit 0
 		;;
 	*)
