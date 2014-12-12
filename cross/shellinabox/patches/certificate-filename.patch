@@ -1,0 +1,18 @@
+diff --git shellinabox/shellinaboxd.c.old shellinabox/shellinaboxd.c
+index 630e0bd..fa675e4 100644
+--- shellinabox/shellinaboxd.c.old
++++ shellinabox/shellinaboxd.c
+@@ -1219,11 +1219,11 @@ static void setUpSSL(Server *server) {
+       if (strchr(certificateDir, '%')) {
+         fatal("Invalid certificate directory name \"%s\".", certificateDir);
+       }
+-      check(tmp = stringPrintf(NULL, "%s/certificate%%s.pem", certificateDir));
++      check(tmp = stringPrintf(NULL, "%s/certificate.pem", certificateDir));
+       serverSetCertificate(server, tmp, 1);
+       free(tmp);
+     } else {
+-      serverSetCertificate(server, "certificate%s.pem", 1);
++      serverSetCertificate(server, "certificate.pem", 1);
+     }
+   }
+ }
