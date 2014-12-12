@@ -1,5 +1,5 @@
 PKG_NAME = shellinabox
-PKG_VERS = 4f472ac831c20080ff97c70bf27b9b425f4dec6a
+PKG_VERS = 20c3fe612ef1cf2b316aa9fd7e143a78fd095982
 PKG_EXT = tar.gz
 PKG_DIST_NAME = $(PKG_VERS).$(PKG_EXT)
 PKG_DIST_SITE = https://github.com/JGRennison/shellinabox/archive
