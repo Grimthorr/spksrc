@@ -1,6 +1,6 @@
 SPK_NAME = shellinabox
 SPK_VERS = 3.0
-SPK_REV = 17
+SPK_REV = 18
 SPK_ICON = src/shellinabox.png
 DSM_UI_DIR = app
 
