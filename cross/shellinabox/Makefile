@@ -1,8 +1,8 @@
 PKG_NAME = shellinabox
-PKG_VERS = 20c3fe612ef1cf2b316aa9fd7e143a78fd095982
+PKG_VERS = f0014c3a7ab7df7394db97ec00093ccbe5d92c7a
 PKG_EXT = tar.gz
 PKG_DIST_NAME = $(PKG_VERS).$(PKG_EXT)
-PKG_DIST_SITE = https://github.com/JGRennison/shellinabox/archive
+PKG_DIST_SITE = https://github.com/shellinabox/shellinabox/archive
 PKG_DIR = $(PKG_NAME)-$(PKG_VERS)
 
 DEPENDS = cross/openssl
