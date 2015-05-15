@@ -18,7 +18,7 @@ start ()
 	chmod 640 ${INSTALL_DIR}/bin/certificate.pem
 
 	# Start shellinabox
-	${INSTALL_DIR}/bin/shellinaboxd -s /:LOGIN --css=${INSTALL_DIR}/share/doc/white-on-black.css --cert=${INSTALL_DIR}/bin/ --disable-ssl-menu -v 2>&1 | tee ${LOG_FILE} &
+	${INSTALL_DIR}/bin/shellinaboxd -s /:LOGIN --user-css="Black on White:-${INSTALL_DIR}/share/doc/black-on-white.css,White On Black:+${INSTALL_DIR}/share/doc/white-on-black.css;Color:+${INSTALL_DIR}/share/doc/color.css,Monochrome:-${INSTALL_DIR}/share/doc/monochrome.css" --cert=${INSTALL_DIR}/bin/ --disable-ssl-menu -v 2>&1 | tee ${LOG_FILE} &
 }
 
 stop ()
