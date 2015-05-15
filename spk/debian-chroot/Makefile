@@ -1,18 +1,19 @@
 SPK_NAME = debian-chroot
 SPK_VERS = 7.4
-SPK_REV = 4
+SPK_REV = 5
 SPK_ICON = src/debian.png
 DSM_UI_DIR = app
 
 DEPENDS  =
-SPK_DEPENDS = "python>2.7.3-3"
+WHEELS = pyextdirect==0.3.1 flask Werkzeug Jinja2 itsdangerous
+SPK_DEPENDS = "python>=2.7.6-8"
 
 MAINTAINER = SynoCommunity
 DESCRIPTION = Debian is a free operating system \(OS\) that comes with over 29000 packages, precompiled software bundled up in a nice format for easy installation on your DiskStation. Debian Chroot allows you to benefit from the Debian OS inside your DiskStation, alongside DSM. This package is intended for advanced users only.
 DESCRIPTION_FRE = Debian est un système d\\\'exploitation \\\(SE\\\) qui rend disponible plus de 29000 paquets, logiciels précompilés et empaquetés dans un joli format pour rendre son installation facile sur votre DiskStation. Debian Chroot vous permet de bénéficier du SE Debian au sein de votre DiskStation, aux cotés de DSM. Ce paquet est destiné aux utilisateurs avancés uniquement.
 RELOAD_UI = yes
 DISPLAY_NAME = Debian Chroot
-CHANGELOG = "1. DSM 5.0 compatibility"
+CHANGELOG = "Fix install issues with Python 2.7.9-13"
 
 HOMEPAGE   = http://www.debian.org/
 LICENSE    =
@@ -30,10 +31,10 @@ DEBIAN_ARCH =
 ifeq ($(findstring $(ARCH),88f6281),$(ARCH))
 DEBIAN_ARCH = armel
 endif
-ifeq ($(findstring $(ARCH),armada370 armadaxp),$(ARCH))
+ifeq ($(findstring $(ARCH),armada370 armadaxp armada375 alpine),$(ARCH))
 DEBIAN_ARCH = armhf
 endif
-ifeq ($(findstring $(ARCH),bromolow cedarview evansport x86),$(ARCH))
+ifeq ($(findstring $(ARCH),bromolow cedarview evansport x86 avoton x64),$(ARCH))
 DEBIAN_ARCH = i386
 endif
 ifeq ($(findstring $(ARCH),qoriq),$(ARCH))
@@ -47,7 +48,9 @@ endif
 include ../../mk/spksrc.spk.mk
 
 .PHONY: debian-chroot_extra_install
-debian-chroot_extra_install: $(STAGING_DIR)/share/requirements.pybundle
+debian-chroot_extra_install:
+	install -m 755 -d ${STAGING_DIR}/share/wheelhouse
+	install -m 644 ${WORK_DIR}/wheelhouse/* ${STAGING_DIR}/share/wheelhouse/
 	install -m 755 -d $(STAGING_DIR)/var
 	debootstrap --foreign --arch $(DEBIAN_ARCH) wheezy $(STAGING_DIR)/var/chroottarget "http://ftp.debian.org/debian"
 	install -m 644 src/sources.list $(STAGING_DIR)/var/chroottarget/etc/apt/sources.list.default
@@ -74,8 +77,3 @@ debian-chroot_extra_install: $(STAGING_DIR)/share/requirements.pybundle
 		convert $(SPK_ICON) -thumbnail $${size}x$${size} \
 		        $(STAGING_DIR)/app/images/$(SPK_NAME)-$${size}.png ; \
 	done
-
-$(STAGING_DIR)/share/requirements.pybundle:
-	@$(MSG) "Bundling requirements"
-	install -m 755 -d $(STAGING_DIR)/share
-	@cd $(WORK_DIR) && $(PIP) bundle $@ pyextdirect==0.3.1 flask

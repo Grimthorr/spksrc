@@ -21,6 +21,22 @@ SPK_FILE_NAME = $(PACKAGES_DIR)/$(SPK_NAME)_$(SPK_NAME_ARCH)-$(SPK_TCVERS)_$(SPK
 
 #####
 
+# Check if package supports ARCH
+ifneq ($(UNSUPPORTED_ARCHS),)
+  ifneq (,$(findstring $(ARCH),$(UNSUPPORTED_ARCHS)))
+    @$(error Arch '$(ARCH)' is not a supported architecture )
+  endif
+endif
+
+# Check minimum DSM requirements of package
+ifneq ($(REQUIRED_DSM),)
+  ifneq ($(REQUIRED_DSM),$(firstword $(sort $(TCVERSION) $(REQUIRED_DSM))))
+    @$(error Toolchain $(TCVERSION) is lower than required version in Makefile $(REQUIRED_DSM) )
+  endif
+endif
+
+#####
+
 # Even though this makefile doesn't cross compile, we need this to setup the cross environment.
 include ../../mk/spksrc.cross-env.mk
 
@@ -42,7 +58,7 @@ $(WORK_DIR)/package.tgz: strip
 	@[ -f $@ ] && rm $@ || true
 	(cd $(STAGING_DIR) && tar cpzf $@ --owner=root --group=root *)
 
-$(WORK_DIR)/INFO: Makefile $(SPK_ICON)
+$(WORK_DIR)/INFO:
 	$(create_target_dir)
 	@$(MSG) "Creating INFO file for $(SPK_NAME)"
 	@echo package=\"$(SPK_NAME)\" > $@
@@ -163,13 +179,13 @@ $(DSM_LICENSE_FILE): $(LICENSE_FILE)
 	@$(dsm_license_copy)
 
 # Package Icons
-$(WORK_DIR)/PACKAGE_ICON.PNG:
+$(WORK_DIR)/PACKAGE_ICON.PNG: $(SPK_ICON)
 	$(create_target_dir)
 	@$(MSG) "Creating PACKAGE_ICON.PNG for $(SPK_NAME)"
 	@[ -f $@ ] && rm $@ || true
 	(convert $(SPK_ICON) -thumbnail 72x72 - >> $@)
 
-$(WORK_DIR)/PACKAGE_ICON_120.PNG:
+$(WORK_DIR)/PACKAGE_ICON_120.PNG: $(SPK_ICON)
 	$(create_target_dir)
 	@$(MSG) "Creating PACKAGE_ICON_120.PNG for $(SPK_NAME)"
 	@[ -f $@ ] && rm $@ || true
@@ -265,16 +281,7 @@ $(SPK_FILE_NAME): $(WORK_DIR)/package.tgz $(WORK_DIR)/INFO checksum $(WORK_DIR)/
 	$(create_target_dir)
 	(cd $(WORK_DIR) && tar cpf $@ --group=root --owner=root $(SPK_CONTENT))
 
-# Compare optional Makefile REQUIRED_DSM to provided TCVERSION. If REQ_DSM is lower than TCVERSION, exit
-checkversion:
-ifneq ($(REQUIRED_DSM),)
-  ifneq ($(REQUIRED_DSM),$(firstword $(sort $(TCVERSION) $(REQUIRED_DSM))))
-	$(error Stop: Toolchain $(TCVERSION) is lower than required version in Makefile $(REQUIRED_DSM) )
-	@exit 1
-  endif
-endif
-
-package: checkversion $(SPK_FILE_NAME)
+package: $(SPK_FILE_NAME)
 
 ### Publish rules
 publish: package
@@ -310,24 +317,28 @@ all-archs: $(addprefix arch-,$(SUPPORTED_ARCHS))
 .PHONY: publish-all-archs
 publish-all-archs: $(addprefix publish-arch-,$(SUPPORTED_ARCHS))
 
-all-archs-%:
-	@$(MSG) Building package for all archs with toolchain version $*
-	@for arch in $(basename $(subst -,.,$(basename $(subst .,,$(filter %$*, $(SUPPORTED_ARCHS)))))) ; \
-	do \
-	  $(MAKE) arch-$$arch-$* ; \
-	done
+all-toolchain-%: $(addprefix arch-,$(basename $(subst -,.,$(basename $(subst .,,$(filter %$*, $(SUPPORTED_ARCHS)))))))
+	@$(MSG) Built packages for toolchain $*
 
-all-archs-dsms:
+publish-all-toolchain-%: $(addprefix publish-arch-,$(basename $(subst -,.,$(basename $(subst .,,$(filter %$*, $(SUPPORTED_ARCHS)))))))
+	@$(MSG) Published packages for toolchain $*
+	
+all-archs-latest: $(addprefix latest-arch-,$(sort $(basename $(SUPPORTED_ARCHS))))
+
+publish-all-archs-latest:
 	@$(MSG) Build all archs with latest DSM per FIRMWARE
 	@for arch in $(sort $(basename $(SUPPORTED_ARCHS))) ; \
 	do \
-	  make latest-arch-$$arch ; \
+	  $(MAKE) publish-latest-arch-$$arch ; \
 	done
 
 latest-arch-%:
 	@$(MSG) Building package for arch $* with latest available toolchain
 	-@MAKEFLAGS= $(MAKE) ARCH=$(basename $(subst -,.,$*)) TCVERSION=$(notdir $(subst -,/,$(sort $(filter %$(lastword $(notdir $(subst -,/,$(sort $(filter $*%, $(SUPPORTED_ARCHS)))))),$(sort $(filter $*%, $(SUPPORTED_ARCHS)))))))
 
+publish-latest-arch-%:
+	@$(MSG) Building package for arch $* with latest available toolchain
+	-@MAKEFLAGS= $(MAKE) ARCH=$(basename $(subst -,.,$*)) TCVERSION=$(notdir $(subst -,/,$(sort $(filter %$(lastword $(notdir $(subst -,/,$(sort $(filter $*%, $(SUPPORTED_ARCHS)))))),$(sort $(filter $*%, $(SUPPORTED_ARCHS))))))) publish
 
 arch-%:
 	@$(MSG) Building package for arch $*

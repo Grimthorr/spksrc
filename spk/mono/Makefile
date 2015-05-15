@@ -1,11 +1,10 @@
 SPK_NAME = mono
-SPK_VERS = 3.6.0
-SPK_REV = 2
+SPK_VERS = 3.10.0
+SPK_REV = 4
 SPK_ICON = src/mono.png
 
-BETA = 1
-
-FIRMWARE = 5.0-4458
+REQUIRED_DSM = 5.0
+UNSUPPORTED_ARCHS = $(PPC_ARCHES)
 
 DEPENDS = cross/$(SPK_NAME)
 
@@ -15,7 +14,8 @@ DESCRIPTION_FRE = Mono est une plateforme logicielle conçue pour permettre aux 
 DESCRIPTION_SPN = Mono es una plataforma de software diseñada para permitir a los desarrolladores crear fácilmente aplicaciones de plataforma cruzada. Es una implementación de código abierto de Microsoft de. Net Framework basado en los estándares ECMA para C # y el Common Language Runtime. Creemos que al abrazar una exitosa plataforma de software estandarizada, podemos bajar las barreras a la producción de grandes aplicaciones para Linux.
 RELOAD_UI = yes
 DISPLAY_NAME = Mono
-CHANGELOG = "1. DSM5 compatibility<br>2. CIL bin files<br>3. Comcerto2k"
+STARTABLE = no
+CHANGELOG = "No longer in beta"
 
 HOMEPAGE = http://mono-project.com/
 LICENSE  =
@@ -25,11 +25,6 @@ SSS_SCRIPT       = src/dsm-control.sh
 ADDITIONAL_SCRIPTS =
 
 INSTALL_PREFIX = /usr/local/$(SPK_NAME)
-
-# Notify of unsupported architectures 
-ifneq ($(findstring $(ARCH),bromolow cedarview evansport x86 armada370 88f6281 armadaxp comcerto2k),$(ARCH))
-$(error Sorry $(ARCH) is not a supported architecture)
-endif
 
 POST_STRIP_TARGET = mono_extra_install
 
@@ -43,11 +38,11 @@ include ../../mk/spksrc.spk.mk
 .PHONY: mono_extra_install
 mono_extra_install:
 	install -m 755 -d $(STAGING_DIR)/lib
-	tar -cpf - -C $(MONO_NATIVE_INSTALL)/usr/local/lib . | tar -xpkf - -C $(STAGING_DIR)/lib
+	cp -nR $(MONO_NATIVE_INSTALL)/usr/local/lib $(STAGING_DIR)/
 	install -m 755 -d $(STAGING_DIR)/etc/mono
-	tar -cpf - -C $(MONO_NATIVE_INSTALL)/usr/local/etc/mono . | tar -xpkf - -C $(STAGING_DIR)/etc/mono
+	cp -nR $(MONO_NATIVE_INSTALL)/usr/local/etc/mono $(STAGING_DIR)/etc/
 	install -m 755 -d $(STAGING_DIR)/bin
-	tar -cpf - -C $(MONO_NATIVE_INSTALL)/usr/local/bin . | tar -xpkf - -C $(STAGING_DIR)/bin
+	cp -nR $(MONO_NATIVE_INSTALL)/usr/local/bin $(STAGING_DIR)/
 	install -m 755 -d $(STAGING_DIR)/var
 	install -m 755 -d $(STAGING_DIR)/app
 	install -m 755 -d $(STAGING_DIR)/app/images
