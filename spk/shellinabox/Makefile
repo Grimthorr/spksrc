@@ -1,6 +1,6 @@
 SPK_NAME = shellinabox
 SPK_VERS = 3.0
-SPK_REV = 20
+SPK_REV = 21
 SPK_ICON = src/shellinabox.png
 DSM_UI_DIR = app
 
@@ -37,7 +37,7 @@ shellinabox_extra_install:
 		        $(STAGING_DIR)/app/$(SPK_NAME)-$${size}.png ; \
 	done
 	install -m 755 -d $(STAGING_DIR)/share/doc
-	install -m 644 src/share/doc/* $(STAGING_DIR)/share/doc/
+	install -m 644 $(STAGING_INSTALL_PREFIX)/share/doc/shellinabox/* $(STAGING_DIR)/share/doc/
 	install -m 755 -d $(STAGING_DIR)/bin
 	install -m 755 $(STAGING_INSTALL_PREFIX)/bin/shellinaboxd $(STAGING_DIR)/bin/shellinaboxd
 	rm -fr $(STAGING_DIR)/lib/
