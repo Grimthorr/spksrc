@@ -1,5 +1,5 @@
 PKG_NAME = shellinabox
-PKG_VERS = f0014c3a7ab7df7394db97ec00093ccbe5d92c7a
+PKG_VERS = 458d441e752186463c4a02d78aa53f07c1a5abcc
 PKG_EXT = tar.gz
 PKG_DIST_NAME = $(PKG_VERS).$(PKG_EXT)
 PKG_DIST_SITE = https://github.com/shellinabox/shellinabox/archive
@@ -12,5 +12,10 @@ COMMENT  = Shell In A Box implements a web server that can export arbitrary comm
 LICENSE  = GNU GPL v2
 
 GNU_CONFIGURE = 1
+PRE_CONFIGURE_TARGET = myPreConfigure
 
 include ../../mk/spksrc.cross-cc.mk
+
+.PHONY: myPreConfigure
+myPreConfigure:
+	$(RUN) autoreconf -i
