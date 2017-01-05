@@ -1,19 +1,20 @@
 SPK_NAME = bicbucstriim
-SPK_VERS = 1.2.4
-SPK_REV = 3
+SPK_VERS = 1.3.6
+SPK_REV = 5
 SPK_ICON = src/bicbucstriim.png
 DSM_UI_DIR = app
 
 DEPENDS  = cross/$(SPK_NAME)
 
-MAINTAINER = SynoCommunity
+MAINTAINER = Diaoul
 DESCRIPTION = BicBucStriim streams books, digital books. It fills a gap in the functionality of current NAS devices, which provide access to your collection of music, videos and photos -- but not books. BicBucStriim covers that area and provides web-based access to your e-book collection.
 ADMIN_URL = /bbs/
 RELOAD_UI = yes
 STARTABLE = no
 DISPLAY_NAME = BicBucStriim
+CHANGELOG = Update to 1.3.6
 
-HOMEPAGE   = http://rvolz.github.com/BicBucStriim/
+HOMEPAGE   = http://projekte.textmulch.de/bicbucstriim
 LICENSE    = MIT
 
 INSTALLER_SCRIPT = src/installer.sh

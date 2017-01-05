@@ -11,6 +11,7 @@ NAME          = $(PKG_NAME)
 COOKIE_PREFIX = $(PKG_NAME)-
 DIST_FILE     = $(DISTRIB_DIR)/$(PKG_DIST_NAME)
 DIST_EXT      = $(PKG_EXT)
+DISTRIB_DIR   = $(KERNELS_DIR)/$(PKG_BRANCH)
 COMPILE_TARGET = kernel_module_compile_target
 EXTRACT_TARGET = kernel_extract_target
 CONFIGURE_TARGET = kernel_configure_target
@@ -53,9 +54,9 @@ all: compile
 clean:
 	rm -fr $(WORK_DIR)
 
-$(DIGESTS_FILE):
+$(DIGESTS_FILE): download
 	@$(MSG) "Generating digests for $(PKG_NAME)"
-	@touch -f $@
+	@rm -f $@ && touch -f $@
 	@for type in SHA1 SHA256 MD5; do \
 	  case $$type in \
 	    SHA1|sha1)     tool=sha1sum ;; \

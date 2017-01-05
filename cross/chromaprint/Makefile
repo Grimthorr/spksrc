@@ -1,5 +1,5 @@
 PKG_NAME = chromaprint
-PKG_VERS = 1.2
+PKG_VERS = 1.3.1
 PKG_EXT = tar.gz
 PKG_DIST_NAME = $(PKG_NAME)-$(PKG_VERS).$(PKG_EXT)
 PKG_DIST_SITE = https://bitbucket.org/acoustid/chromaprint/downloads
@@ -28,7 +28,6 @@ chromaprint_custom_configure:
 		-DCMAKE_CROSSCOMPILING=TRUE \
 		-DCMAKE_SYSTEM_NAME=Linux \
 		-DCMAKE_C_COMPILER=$(TC_PATH)$(TC_PREFIX)gcc \
-		-DCMAKE_CXX_COMPILER=$(TC_PATH)$(TC_PREFIX)g++ \
 		-DCMAKE_CXX_COMPILER=$(TC_PATH)$(TC_PREFIX)g++ \
 		-DCMAKE_EXE_LINKER_FLAGS="-L$(INSTALL_DIR)$(INSTALL_PREFIX)/lib -Wl,--rpath-link,$(INSTALL_DIR)$(INSTALL_PREFIX)/lib -Wl,--rpath,/usr/local/chromaprint/lib" \
 		-DCMAKE_FIND_ROOT_PATH=$(INSTALL_DIR)$(INSTALL_PREFIX) \

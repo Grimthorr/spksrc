@@ -1,23 +1,23 @@
 SPK_NAME = nzbget-testing
-SPK_VERS = 15.0~r1228
-SPK_REV = 7
+SPK_VERS = 16.0~r1439
+SPK_REV = 11
 SPK_ICON = src/nzbget-testing.png
 DSM_UI_DIR = app
 
-DEPENDS = cross/busybox cross/unrar cross/p7zip cross/$(SPK_NAME)
+DEPENDS = cross/busybox cross/p7zip cross/unrar cross/$(SPK_NAME)
 
-MAINTAINER = SynoCommunity
-DESCRIPTION     = NZBGet is a command-line based binary newsgrabber for nzb files, written in C++. It supports client/server mode, automatic par-check/-repair, unpack and web-interface. NZBGet requires low system resources.
+MAINTAINER = Diaoul
+DESCRIPTION = NZBGet is a command-line based binary newsgrabber for nzb files, written in C++. It supports client/server mode, automatic par-check/-repair, unpack and web-interface. NZBGet requires low system resources.
 DESCRIPTION_FRE = NZBGet est un récupérateur de news en ligne de commande écrit en C++ pour les fichiers nzb. Il intègre un mode client/serveur, la vérification, réparation et décompression automatique ainsi qu\\\'une interface web. NZBGet requiert peu de ressources système.
 DESCRIPTION_SPN = NZBGet es una aplicación de linea de comandos escrita en C++ para descargar binarios, desde servidores de noticias, utilizando archivos nzb. Soporta modo cliente y servidor, verificación y descompresión automática y una interfaz web. NZBGet utiliza pocos recursos de sistema.
 RELOAD_UI = yes
 ADMIN_PORT = 9876
 DISPLAY_NAME = NZBGet Testing
-CHANGELOG = "1. Update to 15.0~r1228"
+CHANGELOG = "1. Update to 16.0~r1439<br>2. Security fix for p7zip"
 BETA = 1
 
 HOMEPAGE = http://nzbget.net
-LICENSE  =
+LICENSE  = GPLv2
 
 WIZARDS_DIR = src/wizard/
 
@@ -50,8 +50,6 @@ nzbget_extra_install: $(STAGING_DIR)/share/nzbget/scripts/nzbToMedia $(STAGING_D
 
 $(STAGING_DIR)/share/nzbget/scripts/nzbToMedia:
 	cd $(STAGING_DIR)/share/nzbget/scripts && git clone https://github.com/clinton-hall/nzbToMedia.git
-	rm -fr $(STAGING_DIR)/share/nzbget/scripts/nzbToMedia/.git*
 
 $(STAGING_DIR)/share/nzbget/scripts/GetScripts:
 	cd $(STAGING_DIR)/share/nzbget/scripts && git clone https://github.com/clinton-hall/GetScripts.git
-	rm -fr $(STAGING_DIR)/share/nzbget/scripts/GetScripts/.git*

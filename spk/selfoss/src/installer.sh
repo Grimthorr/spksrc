@@ -8,9 +8,9 @@ DNAME="Selfoss"
 INSTALL_DIR="/usr/local/${PACKAGE}"
 SSS="/var/packages/${PACKAGE}/scripts/start-stop-status"
 WEB_DIR="/var/services/web"
-USER="$([ $(grep buildnumber /etc.defaults/VERSION | cut -d"\"" -f2) -ge 4418 ] && echo -n http || echo -n nobody)"
-MYSQL="/usr/syno/mysql/bin/mysql"
-MYSQLDUMP="/usr/syno/mysql/bin/mysqldump"
+USER="$([ $(/bin/get_key_value /etc.defaults/VERSION buildnumber) -ge 4418 ] && echo -n http || echo -n nobody)"
+MYSQL="$([ $(/bin/get_key_value /etc.defaults/VERSION buildnumber) -ge 7135 ] && echo -n /bin/mysql || echo -n /usr/syno/mysql/bin/mysql)"
+MYSQLDUMP="$([ $(/bin/get_key_value /etc.defaults/VERSION buildnumber) -ge 7135 ] && echo -n /bin/mysqldump || echo -n /usr/syno/mysql/bin/mysqldump)"
 MYSQL_USER="selfoss"
 MYSQL_DATABASE="selfoss"
 TMP_DIR="${SYNOPKG_PKGDEST}/../../@tmp"
@@ -42,6 +42,9 @@ postinst ()
     # Link
     ln -s ${SYNOPKG_PKGDEST} ${INSTALL_DIR}
 
+    # Create conf dir for 4.3 and add dependencies
+    mkdir -p /var/packages/${PACKAGE}/conf && echo -e "[MariaDB]\ndsm_min_ver=5.0-4300" > /var/packages/${PACKAGE}/conf/PKG_DEPS
+
     # Install busybox stuff
     ${INSTALL_DIR}/bin/busybox --install ${INSTALL_DIR}/bin
 
@@ -51,14 +54,7 @@ postinst ()
     # Setup database and configuration file
     if [ "${SYNOPKG_PKG_STATUS}" == "INSTALL" ]; then
         ${MYSQL} -u root -p"${wizard_mysql_password_root}" -e "CREATE DATABASE ${MYSQL_DATABASE}; GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${wizard_mysql_password_selfoss}';"
-        echo -e "[globals]" \
-                "\ndb_type=mysql" \
-                "\ndb_host=localhost" \
-                "\ndb_port=3306" \
-                "\ndb_username=${MYSQL_USER}" \
-                "\ndb_password=${wizard_mysql_password_selfoss}" \
-                "\nsalt=$(openssl rand -hex 8)" \
-                > ${WEB_DIR}/${PACKAGE}/config.ini
+        echo -e "[globals]\ndb_type=mysql\ndb_host=localhost\ndb_port=3306\ndb_username=${MYSQL_USER}\ndb_password=${wizard_mysql_password_selfoss}\nsalt=$(openssl rand -hex 8)" > ${WEB_DIR}/${PACKAGE}/config.ini
     fi
 
     # Fix permissions
@@ -130,6 +126,9 @@ postupgrade ()
     mv ${TMP_DIR}/${PACKAGE}/config.ini ${WEB_DIR}/${PACKAGE}/
     cp -r ${TMP_DIR}/${PACKAGE}/data ${WEB_DIR}/${PACKAGE}/
     rm -fr ${TMP_DIR}/${PACKAGE}
+
+    # Remove trailing whitespace from config
+    sed -ie "s/[ \t]*$//" ${WEB_DIR}/${PACKAGE}/config.ini
 
     exit 0
 }

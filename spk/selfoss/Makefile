@@ -1,17 +1,17 @@
 SPK_NAME = selfoss
-SPK_VERS = 2.12
-SPK_REV = 5
+SPK_VERS = 2.13
+SPK_REV = 6
 SPK_ICON = src/selfoss.png
 DSM_UI_DIR = app
 
 DEPENDS  = cross/busybox cross/$(SPK_NAME)
 
-MAINTAINER = SynoCommunity
+MAINTAINER = moneytoo
 DESCRIPTION = The new multipurpose rss reader, live stream, mashup, aggregation web application.
 ADMIN_URL = /selfoss/
 RELOAD_UI = yes
 DISPLAY_NAME = Selfoss
-CHANGELOG = "1. Update Selfoss to 2.12"
+CHANGELOG = "1. Update Selfoss to 2.13<br>2. Fix DSM4.3 compatibility"
 
 HOMEPAGE   = http://selfoss.aditu.de/
 LICENSE    = GPLv3

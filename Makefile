@@ -1,6 +1,6 @@
 
-SUPPORTED_TCS = $(notdir $(wildcard toolchains/syno-*))
-SUPPORTED_ARCHS = $(notdir $(subst syno-,/,$(SUPPORTED_TCS)))
+AVAILABLE_TCS = $(notdir $(wildcard toolchains/syno-*))
+AVAILABLE_ARCHS = $(notdir $(subst syno-,/,$(AVAILABLE_TCS)))
 SUPPORTED_SPKS = $(patsubst spk/%/Makefile,%,$(wildcard spk/*/Makefile))
 
 
@@ -61,8 +61,8 @@ natives:
 	done
 
 .PHONY: toolchains kernel-modules
-toolchains: $(addprefix toolchain-,$(SUPPORTED_ARCHS))
-kernel-modules: $(addprefix kernel-,$(SUPPORTED_ARCHS))
+toolchains: $(addprefix toolchain-,$(AVAILABLE_ARCHS))
+kernel-modules: $(addprefix kernel-,$(AVAILABLE_ARCHS))
 
 toolchain-%:
 	-@cd toolchains/syno-$*/ && MAKEFLAGS= $(MAKE)
@@ -70,13 +70,29 @@ toolchain-%:
 kernel-%:
 	-@cd kernel/syno-$*/ && MAKEFLAGS= $(MAKE)
 
-setup: local.mk dsm-4.3
+setup: local.mk dsm-5.2
 
 local.mk:
 	@echo "Creating local configuration \"local.mk\"..."
-	@echo "PUBLISH_URL=https://api.synocommunity.com/" > $@
+	@echo "PUBLISH_URL=" > $@
 	@echo "PUBLISH_API_KEY=" >> $@
+	@echo "MAINTAINER?=" >> $@
+	@echo "MAINTAINER_URL=" >> $@
+	@echo "DISTRIBUTOR=" >> $@
+	@echo "DISTRIBUTOR_URL=" >> $@
+	@echo "REPORT_URL=" >> $@
+	@echo "DEFAULT_TC=" >> $@
 
-dsm-%:
+dsm-%: local.mk
 	@echo "Setting default toolchain version to DSM-$*"
-	@echo "DEFAULT_TC=$*" >> local.mk
+	@sed -i "s|DEFAULT_TC.*|DEFAULT_TC=$*|" local.mk
+
+setup-synocommunity: setup
+	@sed -i -e "s|PUBLISH_URL=.*|PUBLISH_URL=https://api.synocommunity.com|" \
+		-e "s|MAINTAINER?=.*|MAINTAINER?=SynoCommunity|" \
+		-e "s|MAINTAINER_URL=.*|MAINTAINER_URL=https://synocommunity.com|" \
+		-e "s|DISTRIBUTOR=.*|DISTRIBUTOR=SynoCommunity|" \
+		-e "s|DISTRIBUTOR_URL=.*|DISTRIBUTOR_URL=https://synocommunity.com|" \
+		-e "s|REPORT_URL=.*|REPORT_URL=https://github.com/SynoCommunity/spksrc/issues|" \
+		local.mk
+

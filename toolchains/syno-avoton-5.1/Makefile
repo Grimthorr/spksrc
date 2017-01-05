@@ -2,7 +2,7 @@ TC_NAME = syno-$(TC_ARCH)
 
 TC_ARCH = avoton
 TC_VERS = 5.1
-TC_FIRMWARE = 5.1-5004
+TC_FIRMWARE = 5.0-4458
 
 TC_DIST_NAME = gcc473_glibc217_x86_64_avoton-GPL.tgz
 
@@ -13,10 +13,10 @@ TC_BASE_DIR = x86_64-pc-linux-gnu
 TC_PREFIX = x86_64-pc-linux-gnu
 TC_TARGET = x86_64-pc-linux-gnu
 
-TC_CFLAGS =
-TC_CPPFLAGS =
-TC_CXXFLAGS =
-TC_LDFLAGS =
+TC_CFLAGS = -I$(WORK_DIR)/$(TC_BASE_DIR)/$(TC_BASE_DIR)/sys-root/usr/include
+TC_CPPFLAGS = -I$(WORK_DIR)/$(TC_BASE_DIR)/$(TC_BASE_DIR)/sys-root/usr/include
+TC_CXXFLAGS = -I$(WORK_DIR)/$(TC_BASE_DIR)/$(TC_BASE_DIR)/sys-root/usr/include
+TC_LDFLAGS = -L$(WORK_DIR)/$(TC_BASE_DIR)/$(TC_BASE_DIR)/sys-root/lib
 
 FIX_TARGET = myFix
 
