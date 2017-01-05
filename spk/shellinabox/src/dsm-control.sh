@@ -13,7 +13,14 @@ start ()
 	echo Starting ${DNAME}...
 
 	# Copy certificate
-	cat /usr/syno/etc/ssl/ssl.crt/server.crt /usr/syno/etc/ssl/ssl.key/server.key /usr/syno/etc/ssl/ssl.intercrt/server-ca.crt > ${INSTALL_DIR}/bin/certificate.pem
+	if [ -f "/usr/syno/etc/ssl/ssl.crt/server.crt" ]
+	then
+		#DSM 4-5
+		cat /usr/syno/etc/ssl/ssl.crt/server.crt /usr/syno/etc/ssl/ssl.key/server.key /usr/syno/etc/ssl/ssl.intercrt/server-ca.crt > ${INSTALL_DIR}/bin/certificate.pem
+	else
+		#DSM 6
+		cat /usr/syno/etc/certificate/system/default/cert.pem /usr/syno/etc/certificate/system/default/privkey.pem /usr/syno/etc/certificate/system/default/syno-ca-cert.pem > ${INSTALL_DIR}/bin/certificate.pem
+	fi
 	chown root:nobody ${INSTALL_DIR}/bin/certificate.pem
 	chmod 640 ${INSTALL_DIR}/bin/certificate.pem
 
@@ -30,12 +37,18 @@ stop ()
 
 status ()
 {
-	PID=`ps | grep shellinaboxd | grep -v grep |awk '{print $1}'`
+	# DSM 4-5
+	PID=`ps | grep shellinaboxd | grep -v grep | awk '{print $1}'`
 	if [ "$PID" != "" ]; then
 		return 0
 	else
-		return 1
+		# DSM 6
+		PID=`ps aux | grep shellinaboxd | grep -v grep | awk '{print $2}'`
+		if [ "$PID" != "" ]; then
+			return 0
+		fi
 	fi
+	return 1
 }
 
 

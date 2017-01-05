@@ -1,5 +1,5 @@
 diff --git logging/logging.c.old logging/logging.c
-index 0b81e7b..1eb4f90 100644
+index 4c24334..40392de 100644
 --- logging/logging.c.old
 +++ logging/logging.c
 @@ -49,6 +49,7 @@
@@ -10,7 +10,7 @@ index 0b81e7b..1eb4f90 100644
  
  #include "logging/logging.h"
  
-@@ -56,6 +57,12 @@ static int verbosity = MSG_DEFAULT;
+@@ -69,6 +70,12 @@ static int verbosity = MSG_DEFAULT;
  
  static void debugMsg(int level, const char *fmt, va_list ap) {
    if (level <= verbosity) {
@@ -18,8 +18,8 @@ index 0b81e7b..1eb4f90 100644
 +    char timeBuf[80];
 +    time( &rawtime );
 +    strftime(timeBuf, sizeof(timeBuf), "%d/%m/%Y %H:%M:%S - ", localtime(&rawtime));
-+
 +    fputs(timeBuf, stderr);
++
      vfprintf(stderr, fmt, ap);
      fputs("\n", stderr);
    }

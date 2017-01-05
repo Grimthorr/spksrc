@@ -1,10 +1,10 @@
 SPK_NAME = shellinabox
-SPK_VERS = 3.0
-SPK_REV = 22
+SPK_VERS = 3.1
+SPK_REV = 23
 SPK_ICON = src/shellinabox.png
 DSM_UI_DIR = app
 
-DEPENDS = cross/shellinabox
+DEPENDS = cross/$(SPK_NAME)
 
 MAINTAINER = Grimthorr
 DESCRIPTION = Shell In A Box implements a web server that can export arbitrary command line tools to a web based terminal emulator. This emulator is accessible to any JavaScript and CSS enabled web browser and does not require any additional browser plugins.
@@ -14,8 +14,8 @@ RELOAD_UI = yes
 DISPLAY_NAME = Shellinabox
 CHANGELOG = "Initial release."
 
-HOMEPAGE   = http://hughesbox.co.uk
-LICENSE    = AGPLv3
+HOMEPAGE = http://www.transmissionbt.com
+LICENSE  = GPLv2/GPLv3
 
 INSTALLER_SCRIPT = src/installer.sh
 SSS_SCRIPT       = src/dsm-control.sh
@@ -37,6 +37,7 @@ shellinabox_extra_install:
 		        $(STAGING_DIR)/app/$(SPK_NAME)-$${size}.png ; \
 	done
 	install -m 755 -d $(STAGING_DIR)/share/doc
+	install -m 644 src/doc/* $(STAGING_DIR)/share/doc/
 	install -m 644 $(STAGING_INSTALL_PREFIX)/share/doc/shellinabox/* $(STAGING_DIR)/share/doc/
 	install -m 755 -d $(STAGING_DIR)/bin
 	install -m 755 $(STAGING_INSTALL_PREFIX)/bin/shellinaboxd $(STAGING_DIR)/bin/shellinaboxd

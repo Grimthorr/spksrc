@@ -1,31 +1,31 @@
 diff --git libhttp/httpconnection.c.old libhttp/httpconnection.c
-index 1365ded..4cd0893 100644
+index 95648e7..2c8edd7 100644
 --- libhttp/httpconnection.c.old
 +++ libhttp/httpconnection.c
-@@ -269,7 +269,7 @@ static int httpFinishCommand(struct HttpConnection *http) {
+@@ -273,7 +273,7 @@ static int httpFinishCommand(struct HttpConnection *http) {
          *lengthBuf  = '\000';
          strncat(lengthBuf, "-", sizeof(lengthBuf)-1);
        }
--      info("%s - - %s \"%s %s %s\" %d %s",
-+      debug("%s - - %s \"%s %s %s\" %d %s",
+-      info("[http] %s - - %s \"%s %s %s\" %d %s",
++      debug("[http] %s - - %s \"%s %s %s\" %d %s",
             http->peerName, timeBuf, http->method, http->path, http->version,
             http->code, lengthBuf);
      }
-@@ -394,7 +394,7 @@ void initHttpConnection(struct HttpConnection *http, struct Server *server,
+@@ -405,7 +405,7 @@ void initHttpConnection(struct HttpConnection *http, struct Server *server,
    http->sslHndl            = NULL;
    http->lastError          = 0;
    if (logIsInfo()) {
--    debug("Accepted connection from %s:%d",
-+    info("Accepted connection from %s:%d",
+-    debug("[http] Accepted connection from %s:%d",
++    info("[http] Accepted connection from %s:%d",
            http->peerName ? http->peerName : "???", http->peerPort);
    }
  }
-@@ -415,7 +415,7 @@ void destroyHttpConnection(struct HttpConnection *http) {
+@@ -426,7 +426,7 @@ void destroyHttpConnection(struct HttpConnection *http) {
      }
      httpSetState(http, COMMAND);
      if (logIsInfo()) {
--      debug("Closing connection to %s:%d",
-+      info("Closing connection to %s:%d",
+-      debug("[http] Closing connection to %s:%d",
++      info("[http] Closing connection to %s:%d",
              http->peerName ? http->peerName : "???", http->peerPort);
      }
      httpShutdown(http, http->closed ? SHUT_WR : SHUT_RDWR);
