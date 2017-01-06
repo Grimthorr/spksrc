@@ -4,9 +4,12 @@
             "title": "Shellinabox",
             "desc": "Shellinabox",
             "icon": "shellinabox-{0}.png",
-            "type": "legacy",
-            "url": "3rdparty/shellinabox/shellinabox.cgi",
-            "allUsers": false
+            "type": "url",
+            "protocol": "https",
+            "port": "4200",
+            "url": "/",
+            "allUsers": false,
+            "grantPrivilege": "local"
         }
     }
 }
