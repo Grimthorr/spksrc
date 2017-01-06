@@ -1,0 +1,12 @@
+diff --git shellinabox/shellinaboxd.c.old shellinabox/shellinaboxd.c
+index e3583e8..190f683 100644
+--- shellinabox/shellinaboxd.c.old
++++ shellinabox/shellinaboxd.c
+@@ -1365,7 +1365,6 @@ int main(int argc, char * const argv[]) {
+   prctl(PR_SET_DUMPABLE, 0, 0, 0, 0);
+ #endif
+   struct rlimit rl = { 0 };
+-  setrlimit(RLIMIT_CORE, &rl);
+   removeLimits();
+ 
+   // Parse command line arguments
